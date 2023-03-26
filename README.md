@@ -1,5 +1,7 @@
 ## Tasks
 
+Run these with [`xc`](https://github.com/joerdav/xc)
+
 ### serve
 ```
 cd www
