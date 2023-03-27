@@ -1,3 +1,5 @@
+https://rustwasm.github.io/book/game-of-life/implementing.html
+
 ## Tasks
 
 Run these with [`xc`](https://github.com/joerdav/xc)

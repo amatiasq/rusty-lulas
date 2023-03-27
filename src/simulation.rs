@@ -3,15 +3,19 @@ pub mod vector;
 
 use self::{cell::Cell, vector::Vector};
 
-pub fn start(size: &Vector) -> Vec<Cell> {
-    let mut rng = rand::thread_rng();
+static mut CELLS: Option<Vec<Cell>> = None;
+
+pub fn start(size: &Vector) {
     let mut cells = Vec::new();
+    let mut rng = rand::thread_rng();
 
     for _ in 0..100 {
         cells.push(Cell::new(&mut rng, size.x, size.y));
     }
 
-    cells
+    unsafe {
+        CELLS = Some(cells);
+    }
 
     // for _ in 0..100 {
     //     for cell in cells.iter_mut() {
@@ -25,9 +29,13 @@ pub fn start(size: &Vector) -> Vec<Cell> {
     // }
 }
 
-pub fn update(cells: &mut Vec<Cell>) {
+pub fn update<'a>() -> &'a Vec<Cell> {
+    let cells = unsafe { CELLS.as_mut().unwrap() };
+
     for cell in cells.iter_mut() {
         cell.position.x += cell.velocity.x;
         cell.position.y += cell.velocity.y;
     }
+
+    unsafe { CELLS.as_ref().unwrap() }
 }

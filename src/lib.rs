@@ -1,8 +1,10 @@
+#![allow(dead_code)]
+
 // mod utils;
-mod render;
+mod dom;
 mod simulation;
 
-use render::Renderer;
+use dom::{get_size, render_frame, set_canvas_size};
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -18,12 +20,13 @@ extern "C" {
 
 #[wasm_bindgen]
 pub fn start() {
-    let renderer = Renderer::new();
-    let size = &renderer.get_size();
-    let mut cells = simulation::start(size);
+    let size = get_size();
+    set_canvas_size(&size);
+    simulation::start(&size);
+}
 
-    // loop {
-    simulation::update(&mut cells);
-    renderer.frame(&cells)
-    // }
+#[wasm_bindgen]
+pub fn update() {
+    let cells = simulation::update();
+    render_frame(&cells)
 }
